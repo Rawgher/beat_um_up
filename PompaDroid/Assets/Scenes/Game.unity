@@ -188,6 +188,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ec6810af9675de43ba7e98f67abd3b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseAnim: {fileID: 1427502843}
+  body: {fileID: 8454531}
+  shadowSprite: {fileID: 342501051}
+  speed: 2
+  walkSpeed: 2
 --- !u!1 &57657543
 GameObject:
   m_ObjectHideFlags: 0
