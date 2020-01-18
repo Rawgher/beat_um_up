@@ -8,8 +8,16 @@ public class Hero : MonoBehaviour
    public Rigidbody body;
    public SpriteRenderer shadowSprite;
 
-   public float speed=2;
-   public float walkSpeed=2;
+   public float speed = 2;
+   public float walkSpeed = 2;
+   public float runSpeed = 5;
+
+   bool isRunning;
+   bool isMoving;
+   float lastWalk;
+   public bool canRun = true;
+   float tapAgainToRunTime = 0.2f;
+   Vector3 lastWalkVector;
 
    Vector3 currentDir;
    bool isFacingLeft;
@@ -24,18 +32,42 @@ public class Hero : MonoBehaviour
 
         if ((v == 0 && h == 0)) {
             Stop();
-        } else if ((v != 0 || h != 0)) {
-            Walk();
+            isMoving = false;
+        } else if (!isMoving && (v != 0 || h != 0)) {
+            isMoving = true;
+            float dotProduct = Vector3.Dot (currentDir, lastWalkVector);
+
+            if (canRun && Time.time < lastWalk + tapAgainToRunTime && dotProduct > 0) {
+                Run();
+            } else {
+                Walk();
+
+                if (h != 0) {
+                    lastWalkVector = currentDir;
+                    lastWalk = Time.time;
+                }
+            }
         }
     }
 
     public void Stop() {
         speed = 0;
+        isRunning = false;
+        baseAnim.SetBool("IsRunning", isRunning);
         baseAnim.SetFloat("Speed", speed);
     }
 
     public void Walk() {
         speed = walkSpeed;
+        isRunning = false;
+        baseAnim.SetBool("IsRunning", isRunning);
+        baseAnim.SetFloat("Speed", speed);
+    }
+
+    public void Run() {
+        speed = runSpeed;
+        isRunning = true;
+        baseAnim.SetBool("IsRunning", isRunning);
         baseAnim.SetFloat("Speed", speed);
     }
 
